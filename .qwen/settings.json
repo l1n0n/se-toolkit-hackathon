@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir *)",
+      "Bash(pip install *)",
+      "Bash(uvicorn *)",
+      "Bash(timeout *)",
+      "Bash(curl *)",
+      "Bash(start *)",
+      "Bash(taskkill *)",
+      "Bash(docker-compose *)"
+    ]
+  },
+  "$version": 3
+}

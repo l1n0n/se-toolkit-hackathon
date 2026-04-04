@@ -1,170 +1,98 @@
-# Lab 9 - Quiz and Hackathon
+# ContactHub
 
-The lab opens with a quiz and then kicks off the hackathon.
+A web-based phone book application for storing, searching, and managing personal contacts.
 
-To get the full point for the lab, you need to:
+## Demo
 
-- Pass Tasks 1, 2, 3 during the lab AND
-- Finish Tasks 4 and 5 by the usual deadline of Thursday 23:59.
+![Screenshot placeholder - add after implementation](demo.png)
 
-Each student builds their own project:
+## Product Context
 
-- Go from an idea to a deployed product.
-- Use agents and LLMs throughout.
+**End user:** All people who need to store and manage contacts in one place
 
-----
+**Problem:** Contacts are scattered across different services (phone, social media, messengers), making it difficult to find and manage them centrally
 
-## Task 1 (graded by TA after the lab)
+**Your solution:** A simple web application where users can quickly add new contacts and search existing ones.
 
-Pen and paper quiz:
+## Features
 
-- 20 mins;
-- closed book, no devices;
-- you get 3 random questions from the question bank;
-- answer at least 2.
+### Implemented (Version 1)
+- ✅ Add new contact
+- ✅ Search existing contact
 
-## Task 2 (approved by TA during the lab)
+### Not Yet Implemented (Version 2)
+- Contact categorization
+- Export contacts (CSV)
+- Improved UI/UX
+- Docker deployment
 
-Ideate and plan your project.
+## Usage
 
-### Project idea
+1. Open the application in your browser
+2. To add a contact: fill in the name, phone, and email fields, then click "Add"
+3. To search: type in the search box and results will filter automatically
 
-The project idea must be:
+## Deployment
 
-- something simple to build;
-- clearly useful;
-- easy to explain.
+### Option 1: Local Development
 
-Define and show to your TA:
+**OS:** Ubuntu 24.04 / Windows
 
-- End-user of the product
-- What problem your product solves for the end-user?
-- The product idea in one short sentence.
-- What is the product's core feature?
+**Requirements:**
+- Python 3.10+
+- pip
 
-### Implementation plan
+**Instructions:**
 
-When the idea is approved, produce a plan for two product versions.
+```bash
+# Clone the repository
+git clone <your-repo-url>
+cd se-toolkit-hackathon
 
-Version 1 does one core thing well:
+# Install dependencies
+pip install -r requirements.txt
 
-- Pick the one feature most valuable to the end-user and relatively easy to implement;
-- It is a functioning product, not a prototype;
-- Must be shown to the TA upon completion for feedback.
+# Run the backend
+cd backend
+uvicorn main:app --host 0.0.0.0 --port 8000
 
-Version 2 builds upon Version 1:
+# Open frontend/index.html in browser
+```
 
-- Improves the initial feature or adds another one on top;
-- Address TA feedback from the lab;
-- Deploy and make it available for use.
+### Option 2: Docker (Recommended)
 
-The product must have the following components, each fulfilling a useful function:
+**Requirements:**
+- Docker
+- Docker Compose
 
-- backend;
-- database;
-- end-user-facing client: web app, mobile app, or LLM-powered agent, e.g. `nanobot`.
+**Instructions:**
 
-Note:
+```bash
+# Clone the repository
+git clone <your-repo-url>
+cd se-toolkit-hackathon
 
-- You can use the setup from Lab 8 or start from scratch.
-- `Telegram` bots are blocked on university VMs.
+# Build and run with Docker Compose
+docker-compose up --build
 
-## Task 3 (approved by TA during the lab)
+# Open browser to http://localhost:8000
+```
 
-Implement Version 1 outlined in the plan:
+### Option 3: Deploy to VM
 
-- Build one core feature;
-- Follow best practices and git workflow;
-- Test it yourself and fix bugs;
-- Have the TA try it as a user;
-- Take note of the TA feedback;
-- Get TA's approval for the task to be marked as DONE.
+**OS:** Ubuntu 24.04
 
-## Task 4
+**Instructions:**
 
-Implement and deploy Version 2 outlined in the plan:
+```bash
+# Install Docker on VM
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
 
-- Build and polish functionality;
-- Take TA feedback into account;
-- Push all code to the GitHub repo (see the detailed instructions below);
-- Follow best practices and git workflow;
-- Document your solution;
-- Dockerize all services;
-- Deploy it to be accessible to use.
+# Clone and deploy
+git clone <your-repo-url>
+cd se-toolkit-hackathon
+docker-compose up -d
 
-Version 2 can be completed during the lab or after it, before the usual deadline.
-
-## Task 5 (demo and PDF submitted through Moodle)
-
-Submit a presentation with five slides:
-
-1. Title:
-
-   - Product title
-   - Your name
-   - Your university email
-   - Your group
-
-2. Context:
-
-   - End-user of the product
-   - What problem your product solves
-   - The product idea in one short sentence
-
-3. Implementation:
-
-   - How you built the product
-   - What went into Version 1 and Version 2
-   - What TA feedback points you addressed
-
-4. Demo:
-
-   - Pre-recorded video demonstration of Version 2 with voice-over (no longer than 2 minutes).
-   - _Note:_ **This is the most important part of the presentation**.
-
-5. Links:
-
-   - Link and QR code for each of these:
-     - The GitHub repo with the product code
-     - Deployed product (latest version)
-
-----
-
-## Publishing the product code on GitHub
-
-- Publish the product code in a repository on `GitHub`.
-
-  The repository must be called `se-toolkit-hackathon`.
-
-- Add the MIT license file to make your product open-source.
-
-- Add `README.md` in the product repository.
-
-  `README.md` structure:
-
-  - Product name (as title)
-
-  - One-line description
-
-  - Demo:
-    - A couple of relevant screenshots of the product
-
-  - Product context:
-
-    - End users
-    - Problem that your product solves for end users
-    - Your solution
-
-  - Features:
-
-    - Implemented and not yet implemented features
-
-  - Usage:
-
-    - Explain how to use your product
-
-  - Deployment:
-
-    - Which OS the VM should run on (you may assume `Ubuntu 24.04` like on your university VMs)
-    - What should be installed on the VM
-    - Step-by-step deployment instructions
+# Access at http://your-vm-ip:8000
+```
