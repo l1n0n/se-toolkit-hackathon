@@ -4,7 +4,9 @@ A web-based phone book application for storing, searching, and managing personal
 
 ## Demo
 
-![Screenshot placeholder - add after implementation](demo.png)
+![ContactHub Demo](demo.png)
+
+*Add, search, and manage your contacts in one place*
 
 ## Product Context
 
@@ -16,50 +18,49 @@ A web-based phone book application for storing, searching, and managing personal
 
 ## Features
 
-### Implemented (Version 1)
-- ✅ Add new contact
-- ✅ Search existing contact
+### Version 1 (Lab Demo)
+- ✅ Add new contact (name, phone, email)
+- ✅ Search existing contacts by name, phone, or email
+- ✅ Clean and responsive web UI
+- ✅ Real-time search as you type
 
-### Not Yet Implemented (Version 2)
-- Contact categorization
-- Export contacts (CSV)
-- Improved UI/UX
-- Docker deployment
+### Version 2 (Deployed)
+- ✅ Docker containerization
+- ✅ Persistent data storage
+- ✅ Deployment-ready for any VM
+- ✅ Full documentation
 
 ## Usage
 
-1. Open the application in your browser
-2. To add a contact: fill in the name, phone, and email fields, then click "Add"
-3. To search: type in the search box and results will filter automatically
-
-## Deployment
-
-### Option 1: Local Development
-
-**OS:** Ubuntu 24.04 / Windows
-
-**Requirements:**
-- Python 3.10+
-- pip
-
-**Instructions:**
+### Quick Start (Docker)
 
 ```bash
 # Clone the repository
-git clone <your-repo-url>
+git clone https://github.com/l1n0n/se-toolkit-hackathon.git
 cd se-toolkit-hackathon
 
-# Install dependencies
-pip install -r requirements.txt
+# Start the application
+docker-compose up -d
 
-# Run the backend
-cd backend
-uvicorn main:app --host 0.0.0.0 --port 8000
-
-# Open frontend/index.html in browser
+# Open in browser
+# http://localhost:8000
 ```
 
-### Option 2: Docker (Recommended)
+### How to Use
+
+1. **Add a contact:**
+   - Fill in the name, phone, and email fields
+   - Click "Add Contact" button
+   - Contact appears in the list below
+
+2. **Search contacts:**
+   - Type in the search box
+   - Results filter automatically as you type
+   - Searches across name, phone, and email fields
+
+## Deployment
+
+### Deploy with Docker (Recommended)
 
 **Requirements:**
 - Docker
@@ -69,30 +70,42 @@ uvicorn main:app --host 0.0.0.0 --port 8000
 
 ```bash
 # Clone the repository
-git clone <your-repo-url>
+git clone https://github.com/l1n0n/se-toolkit-hackathon.git
 cd se-toolkit-hackathon
 
-# Build and run with Docker Compose
-docker-compose up --build
+# Build and run
+docker-compose up --build -d
 
-# Open browser to http://localhost:8000
+# Open in browser
+# http://localhost:8000
 ```
 
-### Option 3: Deploy to VM
-
-**OS:** Ubuntu 24.04
+### Deploy to VM (Ubuntu 24.04)
 
 **Instructions:**
 
 ```bash
-# Install Docker on VM
+# Install Docker
 curl -fsSL https://get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
 
 # Clone and deploy
-git clone <your-repo-url>
+git clone https://github.com/l1n0n/se-toolkit-hackathon.git
 cd se-toolkit-hackathon
 docker-compose up -d
 
 # Access at http://your-vm-ip:8000
+```
+
+### Manage Application
+
+```bash
+# View logs
+docker-compose logs
+
+# Stop application
+docker-compose down
+
+# Restart application
+docker-compose restart
 ```
