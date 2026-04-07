@@ -7,8 +7,16 @@ from typing import List
 import os
 
 from database import engine, SessionLocal, Base
-from models import Contact
-from schemas import ContactCreate, ContactResponse
+from models import Contact, User
+from schemas import ContactCreate, ContactResponse, UserCreate, UserLogin, Token, UserResponse
+from auth import (
+    get_db, 
+    get_password_hash, 
+    authenticate_user, 
+    create_access_token, 
+    get_current_user,
+    ACCESS_TOKEN_EXPIRE_MINUTES
+)
 
 # Создаём таблицы при запуске
 Base.metadata.create_all(bind=engine)
@@ -34,19 +42,58 @@ def root():
 app.mount("/static", StaticFiles(directory=FRONTEND_PATH), name="static")
 
 
-# Получаем сессию БД
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+# === Auth endpoints ===
+@app.post("/api/auth/register", response_model=UserResponse)
+def register(user: UserCreate, db: Session = Depends(get_db)):
+    """Регистрация нового пользователя"""
+    # Проверяем, существует ли пользователь
+    existing_user = db.query(User).filter(User.username == user.username).first()
+    if existing_user:
+        raise HTTPException(status_code=400, detail="Username уже занят")
+    
+    # Создаём нового пользователя
+    hashed_password = get_password_hash(user.password)
+    db_user = User(username=user.username, hashed_password=hashed_password)
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
 
 
+@app.post("/api/auth/login", response_model=Token)
+def login(user: UserLogin, db: Session = Depends(get_db)):
+    """Вход в систему"""
+    db_user = authenticate_user(db, user.username, user.password)
+    if not db_user:
+        raise HTTPException(status_code=400, detail="Неверное имя пользователя или пароль")
+    
+    # Создаём токен
+    access_token = create_access_token(
+        data={"sub": db_user.username}
+    )
+    return {"access_token": access_token, "token_type": "bearer"}
+
+
+@app.get("/api/auth/me", response_model=UserResponse)
+def get_me(current_user: User = Depends(get_current_user)):
+    """Получить информацию о текущем пользователе"""
+    return current_user
+
+
+# === Protected API endpoints ===
 @app.post("/api/contacts", response_model=ContactResponse)
-def create_contact(contact: ContactCreate, db: Session = Depends(get_db)):
+def create_contact(
+    contact: ContactCreate, 
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
     """Добавить новый контакт"""
-    db_contact = Contact(name=contact.name, phone=contact.phone, email=contact.email)
+    db_contact = Contact(
+        name=contact.name, 
+        phone=contact.phone, 
+        email=contact.email,
+        owner_id=current_user.id
+    )
     db.add(db_contact)
     db.commit()
     db.refresh(db_contact)
@@ -54,12 +101,17 @@ def create_contact(contact: ContactCreate, db: Session = Depends(get_db)):
 
 
 @app.get("/api/contacts", response_model=List[ContactResponse])
-def get_contacts(search: str = None, db: Session = Depends(get_db)):
-    """Получить все контакты или найти по имени/телефону/email"""
+def get_contacts(
+    search: str = None, 
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """Получить все контакты пользователя или найти по имени/телефону/email"""
     if search:
         search_pattern = f"%{search}%"
         contacts = (
             db.query(Contact)
+            .filter(Contact.owner_id == current_user.id)
             .filter(
                 Contact.name.like(search_pattern)
                 | Contact.phone.like(search_pattern)
@@ -68,12 +120,6 @@ def get_contacts(search: str = None, db: Session = Depends(get_db)):
             .all()
         )
         return contacts
-    
-    contacts = db.query(Contact).all()
+
+    contacts = db.query(Contact).filter(Contact.owner_id == current_user.id).all()
     return contacts
-
-
-@app.get("/")
-def root():
-    """Главная страница - фронтенд"""
-    return FileResponse(os.path.join(FRONTEND_PATH, "index.html"))
