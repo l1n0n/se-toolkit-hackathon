@@ -8,7 +8,8 @@
       "Bash(curl *)",
       "Bash(start *)",
       "Bash(taskkill *)",
-      "Bash(docker-compose *)"
+      "Bash(docker-compose *)",
+      "Bash(python *)"
     ]
   },
   "$version": 3
