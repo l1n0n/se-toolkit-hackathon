@@ -9,7 +9,8 @@
       "Bash(start *)",
       "Bash(taskkill *)",
       "Bash(docker-compose *)",
-      "Bash(python *)"
+      "Bash(python *)",
+      "Bash(del *)"
     ]
   },
   "$version": 3
