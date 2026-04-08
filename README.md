@@ -6,7 +6,7 @@ A web-based phone book application for storing, searching, and managing personal
 
 ![MyContacts Demo](demo.png)
 
-*Register, login, and manage your personal contacts securely*
+**Register, login, and manage your personal contacts securely**
 
 ## Product Context
 
