@@ -23,7 +23,6 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="ContactHub API")
 
-# Разрешаем запросы с фронтенда
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -31,27 +30,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Раздаём статические файлы (фронтенд)
 FRONTEND_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend")
 
 @app.get("/")
 def root():
-    """Главная страница - фронтенд"""
     return FileResponse(os.path.join(FRONTEND_PATH, "index.html"))
 
 app.mount("/static", StaticFiles(directory=FRONTEND_PATH), name="static")
 
 
-# === Auth endpoints ===
 @app.post("/api/auth/register", response_model=UserResponse)
 def register(user: UserCreate, db: Session = Depends(get_db)):
-    """Регистрация нового пользователя"""
-    # Проверяем, существует ли пользователь
     existing_user = db.query(User).filter(User.username == user.username).first()
     if existing_user:
         raise HTTPException(status_code=400, detail="Username уже занят")
     
-    # Создаём нового пользователя
     hashed_password = get_password_hash(user.password)
     db_user = User(username=user.username, hashed_password=hashed_password)
     db.add(db_user)
@@ -62,12 +55,10 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
 
 @app.post("/api/auth/login", response_model=Token)
 def login(user: UserLogin, db: Session = Depends(get_db)):
-    """Вход в систему"""
     db_user = authenticate_user(db, user.username, user.password)
     if not db_user:
         raise HTTPException(status_code=400, detail="Неверное имя пользователя или пароль")
     
-    # Создаём токен
     access_token = create_access_token(
         data={"sub": db_user.username}
     )
@@ -76,18 +67,15 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
 
 @app.get("/api/auth/me", response_model=UserResponse)
 def get_me(current_user: User = Depends(get_current_user)):
-    """Получить информацию о текущем пользователе"""
     return current_user
 
 
-# === Protected API endpoints ===
 @app.post("/api/contacts", response_model=ContactResponse)
 def create_contact(
     contact: ContactCreate, 
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    """Добавить новый контакт"""
     db_contact = Contact(
         name=contact.name, 
         phone=contact.phone, 
@@ -106,7 +94,6 @@ def get_contacts(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    """Получить все контакты пользователя или найти по имени/телефону/email"""
     if search:
         search_pattern = f"%{search}%"
         contacts = (

@@ -1,50 +1,40 @@
 const API_URL = '/api/contacts';
 const AUTH_URL = '/api/auth';
 
-// Загрузка при старте
 document.addEventListener('DOMContentLoaded', () => {
     checkAuth();
 });
 
-// Проверка авторизации
 function checkAuth() {
     const token = localStorage.getItem('token');
     if (token) {
-        // Проверяем токен и показываем главное приложение
         fetchCurrentUser();
     } else {
-        // Показываем страницу входа
         showAuthPage();
     }
 }
 
-// Показать страницу входа
 function showAuthPage() {
     document.getElementById('authPage').style.display = 'block';
     document.getElementById('mainApp').style.display = 'none';
 }
 
-// Показать главное приложение
 function showMainApp() {
     document.getElementById('authPage').style.display = 'none';
     document.getElementById('mainApp').style.display = 'block';
     
-    // Загружаем контакты
     loadContacts();
     
-    // Обработчики
     document.getElementById('addContactForm').addEventListener('submit', addContact);
     document.getElementById('searchInput').addEventListener('input', searchContacts);
 }
 
-// Переключение вкладок
 function showLoginForm() {
     document.querySelectorAll('.auth-tab')[0].classList.add('active');
     document.querySelectorAll('.auth-tab')[1].classList.remove('active');
     document.getElementById('loginForm').classList.add('active');
     document.getElementById('registerForm').classList.remove('active');
     
-    // Очистить поля форм
     document.getElementById('loginUsername').value = '';
     document.getElementById('loginPassword').value = '';
     document.getElementById('loginError').innerHTML = '';
@@ -56,7 +46,6 @@ function showRegisterForm() {
     document.getElementById('registerForm').classList.add('active');
     document.getElementById('loginForm').classList.remove('active');
     
-    // Очистить поля форм
     document.getElementById('registerUsername').value = '';
     document.getElementById('registerPassword').value = '';
     document.getElementById('registerPasswordConfirm').value = '';
@@ -64,7 +53,6 @@ function showRegisterForm() {
     document.getElementById('registerSuccess').innerHTML = '';
 }
 
-// Вход в систему
 async function handleLogin(event) {
     event.preventDefault();
     
@@ -84,12 +72,10 @@ async function handleLogin(event) {
             const data = await response.json();
             localStorage.setItem('token', data.access_token);
             
-            // Очистить форму
             document.getElementById('loginUsername').value = '';
             document.getElementById('loginPassword').value = '';
             document.getElementById('loginError').innerHTML = '';
             
-            // Показать главное приложение и обновить имя пользователя
             fetchCurrentUser();
         } else {
             const error = await response.json();
@@ -103,7 +89,6 @@ async function handleLogin(event) {
     }
 }
 
-// Регистрация
 async function handleRegister(event) {
     event.preventDefault();
     
@@ -111,11 +96,9 @@ async function handleRegister(event) {
     const password = document.getElementById('registerPassword').value;
     const passwordConfirm = document.getElementById('registerPasswordConfirm').value;
     
-    // Очистить сообщения
     document.getElementById('registerError').innerHTML = '';
     document.getElementById('registerSuccess').innerHTML = '';
     
-    // Проверка совпадения паролей
     if (password !== passwordConfirm) {
         document.getElementById('registerError').innerHTML = 
             '<div class="error-message">Пароли не совпадают</div>';
@@ -135,12 +118,10 @@ async function handleRegister(event) {
             document.getElementById('registerSuccess').innerHTML = 
                 '<div class="success-message">Регистрация успешна! Теперь войдите.</div>';
             
-            // Очистить форму
             document.getElementById('registerUsername').value = '';
             document.getElementById('registerPassword').value = '';
             document.getElementById('registerPasswordConfirm').value = '';
             
-            // Переключиться на форму входа через 1 секунду
             setTimeout(() => {
                 showLoginForm();
             }, 1000);
@@ -156,13 +137,11 @@ async function handleRegister(event) {
     }
 }
 
-// Выход из системы
 function handleLogout() {
     localStorage.removeItem('token');
     showAuthPage();
 }
 
-// Получить текущего пользователя
 async function fetchCurrentUser() {
     try {
         const token = localStorage.getItem('token');
@@ -177,7 +156,6 @@ async function fetchCurrentUser() {
             document.getElementById('currentUser').textContent = user.username;
             showMainApp();
         } else {
-            // Токен недействителен
             localStorage.removeItem('token');
             showAuthPage();
         }
@@ -188,7 +166,6 @@ async function fetchCurrentUser() {
     }
 }
 
-// Получить заголовки с токеном
 function getAuthHeaders() {
     const token = localStorage.getItem('token');
     return {
@@ -197,7 +174,6 @@ function getAuthHeaders() {
     };
 }
 
-// Загрузить все контакты
 async function loadContacts() {
     try {
         const response = await fetch(API_URL, {
@@ -210,7 +186,6 @@ async function loadContacts() {
     }
 }
 
-// Добавить контакт
 async function addContact(event) {
     event.preventDefault();
 
@@ -226,9 +201,7 @@ async function addContact(event) {
         });
 
         if (response.ok) {
-            // Очистить форму
             document.getElementById('addContactForm').reset();
-            // Перезагрузить контакты
             loadContacts();
         }
     } catch (error) {
@@ -236,7 +209,6 @@ async function addContact(event) {
     }
 }
 
-// Поиск контактов
 async function searchContacts() {
     const query = document.getElementById('searchInput').value;
 
@@ -256,7 +228,6 @@ async function searchContacts() {
     }
 }
 
-// Отобразить контакты
 function displayContacts(contacts) {
     const container = document.getElementById('contactsList');
 
