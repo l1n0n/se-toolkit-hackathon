@@ -1,12 +1,12 @@
 # ContactHub
 
-A web-based phone book application for storing, searching, and managing personal contacts.
+A web-based phone book application for storing, searching, and managing personal contacts with secure user authentication.
 
 ## Demo
 
 ![ContactHub Demo](demo.png)
 
-*Add, search, and manage your contacts in one place*
+*Register, login, and manage your personal contacts securely*
 
 ## Product Context
 
@@ -14,7 +14,7 @@ A web-based phone book application for storing, searching, and managing personal
 
 **Problem:** Contacts are scattered across different services (phone, social media, messengers), making it difficult to find and manage them centrally
 
-**Your solution:** A simple web application where users can quickly add new contacts and search existing ones.
+**Your solution:** A secure web application where users can register, login, and manage their personal contacts with authentication.
 
 ## Features
 
@@ -25,6 +25,10 @@ A web-based phone book application for storing, searching, and managing personal
 - ✅ Real-time search as you type
 
 ### Version 2 (Deployed)
+- ✅ **User authentication** — Register and login to your personal account
+- ✅ **Personal contact lists** — Each user has their own isolated contacts
+- ✅ **Secure password storage** — Passwords are hashed using bcrypt
+- ✅ **JWT token-based security** — Sessions are protected with JWT tokens
 - ✅ Docker containerization
 - ✅ Persistent data storage
 - ✅ Deployment-ready for any VM
@@ -48,15 +52,27 @@ docker-compose up -d
 
 ### How to Use
 
-1. **Add a contact:**
+1. **Register a new account:**
+   - Click the "Register" tab on the login page
+   - Enter a username and password
+   - Click "Register" to create your account
+
+2. **Login to your account:**
+   - Enter your username and password
+   - Click "Login" to access your personal contacts
+
+3. **Add a contact:**
    - Fill in the name, phone, and email fields
    - Click "Add Contact" button
    - Contact appears in the list below
 
-2. **Search contacts:**
+4. **Search contacts:**
    - Type in the search box
    - Results filter automatically as you type
    - Searches across name, phone, and email fields
+
+5. **Logout:**
+   - Click the "Logout" button in the header to exit your account
 
 ## Deployment
 
