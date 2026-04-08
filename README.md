@@ -25,10 +25,9 @@ A web-based phone book application for storing, searching, and managing personal
 - ✅ Real-time search as you type
 
 ### Version 2 (Deployed)
-- ✅ **User authentication** — Register and login to your personal account
-- ✅ **Personal contact lists** — Each user has their own isolated contacts
-- ✅ **Secure password storage** — Passwords are hashed using bcrypt
-- ✅ **JWT token-based security** — Sessions are protected with JWT tokens
+- ✅ User authentication — Register and login to your personal account
+- ✅ Personal contact lists — Each user has their own isolated contacts
+- ✅ Secure password storage — Passwords are hashed
 - ✅ Docker containerization
 - ✅ Persistent data storage
 - ✅ Deployment-ready for any VM
