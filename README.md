@@ -1,10 +1,10 @@
-# ContactHub
+# MyContacts
 
 A web-based phone book application for storing, searching, and managing personal contacts with secure user authentication.
 
 ## Demo
 
-![ContactHub Demo](demo.png)
+![MyContacts Demo](demo.png)
 
 *Register, login, and manage your personal contacts securely*
 
